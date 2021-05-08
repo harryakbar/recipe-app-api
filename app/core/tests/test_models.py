@@ -14,10 +14,7 @@ class ModelTests(TestCase):
         """Test Creating a new user with an email is successful"""
         email = "harryakbaram@gmail.com"
         password = "password123"
-        user = get_user_model().objects.create_user(
-            email=email,
-            password=password
-        )
+        user = get_user_model().objects.create_user(email=email, password=password)
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
@@ -26,10 +23,7 @@ class ModelTests(TestCase):
         """Test Creating a new user with an email is normalized"""
         email = "harryakbaram@GMAIL.com"
         password = "password123"
-        user = get_user_model().objects.create_user(
-            email=email,
-            password=password
-        )
+        user = get_user_model().objects.create_user(email=email, password=password)
 
         self.assertEqual(user.email, email.lower())
         self.assertTrue(user.check_password(password))
@@ -37,25 +31,27 @@ class ModelTests(TestCase):
     def test_create_with_email_invalid(self):
         """Test Creating a new user with an email is invalid"""
         with self.assertRaises(ValueError):
-            get_user_model().objects.create_user(None, 'password123')
+            get_user_model().objects.create_user(None, "password123")
 
     def test_create_super_user(self):
         """Test creating super user"""
         email = "harryakbaram@gmail.com"
         password = "password123"
-        user = get_user_model().objects.create_superuser(
-            email,
-            password
-        )
+        user = get_user_model().objects.create_superuser(email, password)
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
     def test_tag_str(self):
         """Test tag string representation"""
-        tag = models.Tag.objects.create(
-            user=sample_user(),
-            name="Vegan"
-        )
+        tag = models.Tag.objects.create(user=sample_user(), name="Vegan")
 
         self.assertEqual(str(tag), tag.name)
+
+    def test_ingredients_str(self):
+        """Test tag string representation"""
+        ingredient = models.Ingredient.objects.create(
+            user=sample_user(), name="Cucumber"
+        )
+
+        self.assertEqual(str(ingredient), ingredient.name)
